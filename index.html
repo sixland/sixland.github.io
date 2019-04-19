@@ -2,6 +2,15 @@
 <html>
   <body>
     <h1>HELLO WORLD</h1>
+    <p id='demo'></p>
+      <script>
+        var myVar=setInterval(function(){myTimer()},1000);
+            function myTimer(){
+	        var d=new Date();
+	        var t=d.toLocaleTimeString();
+	        document.getElementById("demo").innerHTML=t;
+            }
+    </script>
     <img src="001.jpg"  />
   </body>
 </html>
