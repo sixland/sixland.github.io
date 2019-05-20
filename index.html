@@ -5,13 +5,10 @@
   <body>
     <h1>HELLO WORLD</h1>
     <p id='demo'></p>
-      <script>
-        var myVar=setInterval(function(){myTimer()},1000);
-            function myTimer(){
-	        var d=new Date();
-	        var t=d.toLocaleTimeString();
-	        document.getElementById("demo").innerHTML=t;
-            }
-    </script>
+    <p id='demo1'></p>
+    <p id='demo2'></p>
+
+    <script type='text/javascript' src='./nacl-fast.js'></script>
+    <script type='text/javascript' src='./wallet.js'></script>
   </body>
 </html>
