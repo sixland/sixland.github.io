@@ -1,4 +1,5 @@
-window.onload = function(){(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+window.load = function(){
+  (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -26985,10 +26986,18 @@ function config (name) {
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],190:[function(require,module,exports){
 
-const { hd, config, helpers} = require('@ckb-lumos/lumos');
-const { mnemonic, ExtendedPrivateKey, AddressType } = hd;
+const { hd, config, helpers, BI } = require('@ckb-lumos/lumos');
+const { Indexer, RPC } = require("@ckb-lumos/ckb-indexer")
 
 config.initializeConfig(config.predefined.AGGRON4);
+
+const { mnemonic, ExtendedPrivateKey, AddressType } = hd;
+
+const CKB_RPC_URL = "https://testnet.ckb.dev/rpc"
+const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer"
+const rpc = new RPC(CKB_RPC_URL);
+const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
+
 
 const generateFirstHDPrivateKey = () => {
     const myMnemonic = mnemonic.generateMnemonic();
@@ -27014,18 +27023,43 @@ const getAddressByPrivateKey = (privateKey) => {
     return helpers.encodeToAddress(lockScript);
   }
 
-let pk = generateFirstHDPrivateKey()
+  async function getCapacities(address) {
+    const collector = indexer.collector({
+      lock: helpers.parseAddress(address),
+    });
+  
+    let capacities = BI.from(0);
+    for await (const cell of collector.collect()) {
+      capacities = capacities.add(cell.cellOutput.capacity);
+    }
+  
+    return capacities;
+  }
 
-let address = getAddressByPrivateKey(pk)
+async function main(){
+  let privatekey = generateFirstHDPrivateKey()
 
-console.log(pk)
-console.log(address)
+  let address = getAddressByPrivateKey(privatekey)
 
-let main = document.querySelector(".main");
-console.log(main)
-main.innerHTML = "private key: " + pk + "<br/>" + "address: " + address;
+  let balance = await getCapacities("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqgy5rtexzvhk7jt7gla8wlq5lztf79tjhg9fmd4f")
+  
 
-},{"@ckb-lumos/lumos":256}],191:[function(require,module,exports){
+  console.log(privatekey)
+  console.log(address)
+  console.log(balance.div(10**8).toString())
+
+  let main = document.querySelector(".main");
+  // console.log(main)
+  main.innerHTML = "private key: " + privatekey + "<br/>" 
+              + "address: " + address + "<br/>" 
+              + "search balance of ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqgy5rtexzvhk7jt7gla8wlq5lztf79tjhg9fmd4f" + "<br/>"
+              + "balance: " + balance;
+}
+
+main();
+
+
+},{"@ckb-lumos/ckb-indexer":204,"@ckb-lumos/lumos":256}],191:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52737,4 +52771,5 @@ function version(uuid) {
 
 var _default = version;
 exports.default = _default;
-},{"./validate.js":358}]},{},[190]);}
+},{"./validate.js":358}]},{},[190]);
+}
