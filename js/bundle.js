@@ -1,5 +1,4 @@
-window.load = function(){
-  (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+window.onload = function(){(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -27042,7 +27041,6 @@ async function main(){
   let address = getAddressByPrivateKey(privatekey)
 
   let balance = await getCapacities("ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqgy5rtexzvhk7jt7gla8wlq5lztf79tjhg9fmd4f")
-  
 
   console.log(privatekey)
   console.log(address)
@@ -27050,10 +27048,7 @@ async function main(){
 
   let main = document.querySelector(".main");
   // console.log(main)
-  main.innerHTML = "private key: " + privatekey + "<br/>" 
-              + "address: " + address + "<br/>" 
-              + "search balance of ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqgy5rtexzvhk7jt7gla8wlq5lztf79tjhg9fmd4f" + "<br/>"
-              + "balance: " + balance;
+  main.innerHTML = "private key: " + privatekey + "<br/>" + "address: " + address + "<br/>" + "address of ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsqgy5rtexzvhk7jt7gla8wlq5lztf79tjhg9fmd4f" + "<br/>" + "balance: " + balance.div(10**8).toString();
 }
 
 main();
@@ -52771,5 +52766,4 @@ function version(uuid) {
 
 var _default = version;
 exports.default = _default;
-},{"./validate.js":358}]},{},[190]);
-}
+},{"./validate.js":358}]},{},[190]);}
